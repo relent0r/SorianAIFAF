@@ -1,0 +1,17 @@
+name = "SorianAI-FAF"
+uid = "73e73dee-aff4-49fb-b661-f636a2a0cc61"
+version = 1
+copyright = "Sorian"
+description = "The original Sorian AI from FAF. Converted to a vault mod by relentless aka relent0r"
+author = "relentless"
+url = ""
+icon = "/mods/sorianaifaf/icon.jpg"
+selectable = true
+enabled = true
+exclusive = false
+ui_only = false
+requires = { }
+requiresNames = { }
+conflicts = { }
+before = { }
+after = { }

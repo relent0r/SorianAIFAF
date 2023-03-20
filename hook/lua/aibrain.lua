@@ -1,8 +1,10 @@
 local SUtils = import("/lua/ai/sorianutilities.lua")
 
-AIBrain = Class(StandardBrain) {
-    ---@param self AIBrain
-    ---@param planName string
+SorianAIBrainClass = import("/lua/aibrains/base-ai.lua").AIBrain
+---@param self AIBrain
+---@param planName string
+AIBrain = Class(SorianAIBrainClass) {
+
     OnCreateAI = function(self, planName)
         StandardBrain.OnCreateAI(self, planName)
         local civilian = false

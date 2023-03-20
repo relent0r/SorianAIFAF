@@ -1,22 +1,15 @@
 
 --- Converts the (lobby) key defined in `aitypes.lua` or for custom AIs in the `CustomAIs_v2` folder
 --- to a brain instance specific for that AI
-keyToBrain = {
-    -- standard framework
-    --default = import("/lua/aibrains/default.lua").AIBrainDefault,
-
-    -- base AIs
-    tech = import("/lua/aibrains/base-ai.lua").AIBrain,
-    rush = import("/lua/aibrains/base-ai.lua").AIBrain,
-    easy = import("/lua/aibrains/base-ai.lua").AIBrain,
-    normal = import("/lua/aibrains/base-ai.lua").AIBrain,
-    adaptive = import("/lua/aibrains/base-ai.lua").AIBrain,
-    random = import("/lua/aibrains/base-ai.lua").AIBrain,
-
-    techcheat = import("/lua/aibrains/base-ai.lua").AIBrain,
-    rushcheat = import("/lua/aibrains/base-ai.lua").AIBrain,
-    easycheat = import("/lua/aibrains/base-ai.lua").AIBrain,
-    normalcheat = import("/lua/aibrains/base-ai.lua").AIBrain,
-    adaptivecheat = import("/lua/aibrains/base-ai.lua").AIBrain,
-    randomcheat = import("/lua/aibrains/base-ai.lua").AIBrain,
-}
+keyToBrain['sorian'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianrush'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianair'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianwater'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianturtle'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianadaptive'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['soriancheat'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianrushcheat'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianaircheat'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianwatercheat'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianturtlecheat'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')
+keyToBrain['sorianadaptivecheat'] = import('/mods/sorianaifaf/lua/ai/sorianai-brain.lua')

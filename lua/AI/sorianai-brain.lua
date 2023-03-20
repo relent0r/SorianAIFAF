@@ -1,4 +1,17 @@
+local AIDefaultPlansList = import("/lua/aibrainplans.lua").AIPlansList
+local AIUtils = import("/lua/ai/aiutilities.lua")
+local Utilities = import("/lua/utilities.lua")
+local ScenarioUtils = import("/lua/sim/scenarioutilities.lua")
+local Behaviors = import("/lua/ai/aibehaviors.lua")
+local AIBuildUnits = import("/lua/ai/aibuildunits.lua")
+local FactoryManager = import("/lua/sim/factorybuildermanager.lua")
+local PlatoonFormManager = import("/lua/sim/platoonformmanager.lua")
+local BrainConditionsMonitor = import("/lua/sim/brainconditionsmonitor.lua")
+local EngineerManager = import("/lua/sim/engineermanager.lua")
+local StandardBrain = import("/lua/aibrain.lua").AIBrain
 local SUtils = import("/lua/ai/sorianutilities.lua")
+
+local TableGetn = table.getn
 
 SorianAIBrainClass = import("/lua/aibrains/base-ai.lua").AIBrain
 ---@param self AIBrain
@@ -63,6 +76,7 @@ AIBrain = Class(SorianAIBrainClass) {
         if self.BrainType == 'Human' then
             return
         end
+        LOG('Sorian is initializing skirmish systems')
 
         -- TURNING OFF AI POOL PLATOON, I MAY JUST REMOVE THAT PLATOON FUNCTIONALITY LATER
         local poolPlatoon = self:GetPlatoonUniquelyNamed('ArmyPool')
@@ -95,23 +109,22 @@ AIBrain = Class(SorianAIBrainClass) {
         self:AddBuilderManagers(self:GetStartVector3f(), 100, 'MAIN', false)
 
         -- Begin the base monitor process
+        local spec = {
+            DefaultDistressRange = 200,
+            AlertLevel = 8,
+        }
         self:BaseMonitorInitializationSorian(spec)
         local plat = self:GetPlatoonUniquelyNamed('ArmyPool')
         plat:ForkThread(plat.BaseManagersDistressAISorian)
         self.DeadBaseThread = self:ForkThread(self.DeadBaseMonitor)
         self.EnemyPickerThread = self:ForkThread(self.PickEnemySorian)
-
-        
         self.IMAPConfig = {
             OgridRadius = 0,
             IMAPSize = 0,
             Rings = 0,
         }
-
         self:IMAPConfiguration()
-        if self:IsBaseAI() then
-            self:ForkThread(self.MapAnalysis)
-        end
+
     end,
 
     ---@param self AIBrain

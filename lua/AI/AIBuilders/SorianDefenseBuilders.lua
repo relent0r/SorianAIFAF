@@ -22,8 +22,8 @@ local SAI = '/lua/scenarioplatoonai.lua'
 local IBC = '/lua/editor/instantbuildconditions.lua'
 local TBC = '/lua/editor/threatbuildconditions.lua'
 local PlatoonFile = '/lua/platoon.lua'
-local SBC = '/lua/editor/SorianBuildConditions.lua'
-local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
+local SBC = '/mods/sorianaifaf/lua/editor/sorianbuildconditions.lua'
+local SIBC = '/mods/sorianaifaf/lua/editor/sorianinstantbuildconditions.lua'
 
 local AIAddBuilderTable = import("/lua/ai/aiaddbuildertable.lua")
 

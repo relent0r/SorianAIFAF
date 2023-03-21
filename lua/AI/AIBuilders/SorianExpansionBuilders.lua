@@ -21,8 +21,8 @@ local PCBC = '/lua/editor/platooncountbuildconditions.lua'
 local SAI = '/lua/scenarioplatoonai.lua'
 local IBC = '/lua/editor/instantbuildconditions.lua'
 local PlatoonFile = '/lua/platoon.lua'
-local SBC = '/lua/editor/SorianBuildConditions.lua'
-local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
+local SBC = '/mods/sorianaifaf/lua/editor/sorianbuildconditions.lua'
+local SIBC = '/mods/sorianaifaf/lua/editor/sorianinstantbuildconditions.lua'
 
 local ExtractorToFactoryRatio = 3
 

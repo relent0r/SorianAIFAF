@@ -10,8 +10,8 @@
 local UCBC = '/lua/editor/unitcountbuildconditions.lua'
 local IBC = '/lua/editor/instantbuildconditions.lua'
 local TBC = '/lua/editor/threatbuildconditions.lua'
-local SBC = '/lua/editor/SorianBuildConditions.lua'
-local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
+local SBC = '/mods/sorianaifaf/lua/editor/sorianbuildconditions.lua'
+local SIBC = '/mods/sorianaifaf/lua/editor/sorianinstantbuildconditions.lua'
 
 local SUtils = import("/lua/ai/sorianutilities.lua")
 

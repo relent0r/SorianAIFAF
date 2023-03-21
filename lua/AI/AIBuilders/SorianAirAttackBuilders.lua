@@ -22,8 +22,8 @@ local TBC = '/lua/editor/threatbuildconditions.lua'
 local PCBC = '/lua/editor/platooncountbuildconditions.lua'
 local SAI = '/lua/scenarioplatoonai.lua'
 local PlatoonFile = '/lua/platoon.lua'
-local SBC = '/lua/editor/SorianBuildConditions.lua'
-local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
+local SBC = '/mods/sorianaifaf/lua/editor/sorianbuildconditions.lua'
+local SIBC = '/mods/sorianaifaf/lua/editor/sorianinstantbuildconditions.lua'
 
 local SUtils = import("/lua/ai/sorianutilities.lua")
 

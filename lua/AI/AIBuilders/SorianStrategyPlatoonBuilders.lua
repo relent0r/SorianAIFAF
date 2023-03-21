@@ -13,8 +13,8 @@ local MIBC = '/lua/editor/miscbuildconditions.lua'
 local IBC = '/lua/editor/instantbuildconditions.lua'
 local EBC = '/lua/editor/economybuildconditions.lua'
 local SAI = '/lua/scenarioplatoonai.lua'
-local SBC = '/lua/editor/SorianBuildConditions.lua'
-local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
+local SBC = '/mods/sorianaifaf/lua/editor/sorianbuildconditions.lua'
+local SIBC = '/mods/sorianaifaf/lua/editor/sorianinstantbuildconditions.lua'
 
 BuilderGroup {
     BuilderGroupName = 'SorianExcessMassBuilders',

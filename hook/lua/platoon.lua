@@ -510,7 +510,7 @@ Platoon = Class(SorianAIPlatoonClass) {
                     end
                 end
                 if bestTarget then
-                    local safePath, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, 'Air', self:GetPlatoonPosition(), bestTarget, 200)
+                    local safePath, reason = AIAttackUtils.PlatoonGenerateSafePathToSorian(aiBrain, 'Air', self:GetPlatoonPosition(), bestTarget, 200)
                     if safePath then
                         local pathSize = table.getn(path)
                         for wpidx,waypointPath in path do
@@ -740,7 +740,7 @@ Platoon = Class(SorianAIPlatoonClass) {
             self.LastMarker[2] = self.LastMarker[1]
             self.LastMarker[1] = bestMarker.Position
             --LOG("GuardMarker: Attacking " .. bestMarker.Name)
-            local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, self:GetPlatoonPosition(), bestMarker.Position, 200)
+            local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSorian(aiBrain, self.MovementLayer, self:GetPlatoonPosition(), bestMarker.Position, 200)
             --local success, bestGoalPos = AIAttackUtils.CheckPlatoonPathingEx(self, bestMarker.Position)
             IssueClearCommands(self:GetPlatoonUnits())
             if path then
@@ -1282,7 +1282,7 @@ Platoon = Class(SorianAIPlatoonClass) {
             --Is there someplace we should scout?
             if targetData then
                 --Can we get there safely?
-                local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, scout:GetPosition(), targetData.Position, 100)
+                local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSorian(aiBrain, self.MovementLayer, scout:GetPosition(), targetData.Position, 100)
 
                 IssueClearCommands(self:GetPlatoonUnits())
 
@@ -1819,7 +1819,7 @@ Platoon = Class(SorianAIPlatoonClass) {
 
         if bestBase then
             AIAttackUtils.GetMostRestrictiveLayer(self)
-            local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, self:GetPlatoonPosition(), bestBase.Position, 200)
+            local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSorian(aiBrain, self.MovementLayer, self:GetPlatoonPosition(), bestBase.Position, 200)
             IssueClearCommands(self:GetPlatoonUnits())
 
             if path then
@@ -1913,7 +1913,7 @@ Platoon = Class(SorianAIPlatoonClass) {
                 end
                 if target and (target != oldTarget or movingToScout) then
                     oldTarget = target
-                    local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, self:GetPlatoonPosition(), target:GetPosition(), 10)
+                    local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSorian(aiBrain, self.MovementLayer, self:GetPlatoonPosition(), target:GetPosition(), 10)
                     self:Stop()
                     if not path then
                         if reason == 'NoStartNode' or reason == 'NoEndNode' then
@@ -1945,7 +1945,7 @@ Platoon = Class(SorianAIPlatoonClass) {
                     else
                         local x,z = aiBrain:GetArmyStartPos()
                         local position = AIUtils.RandomLocation(x,z)
-                        local safePath, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, 'Air', self:GetPlatoonPosition(), position, 200)
+                        local safePath, reason = AIAttackUtils.PlatoonGenerateSafePathToSorian(aiBrain, 'Air', self:GetPlatoonPosition(), position, 200)
                         if safePath then
                             for _,p in safePath do
                                 self:MoveToLocation(p, false)
@@ -2053,7 +2053,7 @@ Platoon = Class(SorianAIPlatoonClass) {
                 reference = table.copy(eng:GetPosition())
             end
             relative = false
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSorian
             table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
         elseif cons.Wall then
             local pos = aiBrain:PBMGetLocationCoords(cons.LocationType) or cons.Position or self:GetPlatoonPosition()
@@ -2061,7 +2061,7 @@ Platoon = Class(SorianAIPlatoonClass) {
             relative = false
             reference = AIUtils.GetLocationNeedingWalls(aiBrain, 200, 5, 'DEFENSE', cons.ThreatMin, cons.ThreatMax, cons.ThreatRings)
             table.insert(baseTmplList, 'Blank')
-            buildFunction = AIBuildStructures.WallBuilder
+            buildFunction = AIBuildStructures.WallBuilderSorian
         elseif cons.NearBasePatrolPoints then
             relative = false
             reference = AIUtils.GetBasePatrolPointsSorian(aiBrain, cons.Location or 'MAIN', cons.Radius or 100)
@@ -2070,7 +2070,7 @@ Platoon = Class(SorianAIPlatoonClass) {
                 table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, v))
             end
             -- Must use BuildBaseOrdered to start at the marker; otherwise it builds closest to the eng
-            buildFunction = AIBuildStructures.AIBuildBaseTemplateOrdered
+            buildFunction = AIBuildStructures.AIBuildBaseTemplateOrderedSorian
         elseif cons.NearMarkerType and cons.ExpansionBase then
             local pos = aiBrain:PBMGetLocationCoords(cons.LocationType) or cons.Position or self:GetPlatoonPosition()
             local radius = cons.LocationRadius or aiBrain:PBMGetLocationRadius(cons.LocationType) or 100
@@ -2132,8 +2132,6 @@ Platoon = Class(SorianAIPlatoonClass) {
                 --aiBrain:ExpansionHelp(eng, reference)
             end
             table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
-            -- Must use BuildBaseOrdered to start at the marker; otherwise it builds closest to the eng
-            --buildFunction = AIBuildStructures.AIBuildBaseTemplateOrdered
             buildFunction = AIBuildStructures.AIBuildBaseTemplate
         elseif cons.NearMarkerType and cons.FireBase and cons.FireBaseRange then
             baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
@@ -2146,7 +2144,7 @@ Platoon = Class(SorianAIPlatoonClass) {
 
             table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
 
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSorian
         elseif cons.NearMarkerType and cons.NearMarkerType == 'Defensive Point' then
             baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
 
@@ -2158,7 +2156,7 @@ Platoon = Class(SorianAIPlatoonClass) {
 
             table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
 
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSorian
         elseif cons.NearMarkerType and cons.NearMarkerType == 'Naval Defensive Point' then
             baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
 
@@ -2170,7 +2168,7 @@ Platoon = Class(SorianAIPlatoonClass) {
 
             table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
 
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSorian
         elseif cons.NearMarkerType and cons.NearMarkerType == 'Expansion Area' then
             baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
 
@@ -2182,7 +2180,7 @@ Platoon = Class(SorianAIPlatoonClass) {
 
             table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
 
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSorian
         elseif cons.NearMarkerType then
             --WARN('*Data weird for builder named - ' .. self.BuilderName)
             if not cons.ThreatMin or not cons.ThreatMax or not cons.ThreatRings then
@@ -2204,7 +2202,7 @@ Platoon = Class(SorianAIPlatoonClass) {
                 --aiBrain:ExpansionHelp(eng, reference)
             end
             table.insert(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSorian
         elseif cons.AvoidCategory then
             relative = false
             local pos = aiBrain.BuilderManagers[eng.BuilderManagerData.LocationType].EngineerManager.Location
@@ -2217,7 +2215,7 @@ Platoon = Class(SorianAIPlatoonClass) {
                 return
             end
             reference  = AIUtils.FindUnclutteredArea(aiBrain, cat, pos, radius, cons.maxUnits, cons.maxRadius, avoidCat)
-            buildFunction = AIBuildStructures.AIBuildAdjacency
+            buildFunction = AIBuildStructures.AIBuildAdjacencySorian
             table.insert(baseTmplList, baseTmpl)
         elseif cons.AdjacencyCategory then
             relative = false
@@ -2231,13 +2229,13 @@ Platoon = Class(SorianAIPlatoonClass) {
             end
             reference  = AIUtils.GetOwnUnitsAroundPointSorian(aiBrain, cat, pos, radius, cons.ThreatMin,
                                                         cons.ThreatMax, cons.ThreatRings, 'Overall', cons.MinRadius or 0)
-            buildFunction = AIBuildStructures.AIBuildAdjacency
+            buildFunction = AIBuildStructures.AIBuildAdjacencySorian
             table.insert(baseTmplList, baseTmpl)
         else
             table.insert(baseTmplList, baseTmpl)
             relative = true
             reference = true
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSorian
         end
         if cons.BuildClose then
             closeToBuilder = eng
@@ -2631,6 +2629,21 @@ Platoon = Class(SorianAIPlatoonClass) {
             end
         end
         return true
+    end,
+
+    ---@param self Platoon
+    NameUnitsSorian = function(self)
+        local units = self:GetPlatoonUnits()
+        local AINames = import("/lua/ai/sorianlang.lua").AINames
+        if units and not table.empty(units) then
+            for k, v in units do
+                local ID = v.UnitId
+                if AINames[ID] then
+                    local num = Random(1, table.getn(AINames[ID]))
+                    v:SetCustomName(AINames[ID][num])
+                end
+            end
+        end
     end,
 
 }

@@ -97,11 +97,12 @@ function EngineerMoveWithSafePathSorian(aiBrain, unit, destination)
     if not destination then
         return false
     end
+    local NavUtils = import("/lua/sim/navutils.lua")
 
-    local result, bestPos = false
-    result, bestPos = AIAttackUtils.CanGraphTo(unit, destination, 'Land')
-    if not result then
-        result, bestPos = AIAttackUtils.CanGraphTo(unit, destination, 'Amphibious')
+    local unitPos = unit:GetPosition()
+    local result, bestPos = NavUtils.CanPathTo('Land', unitPos, destination)
+    if not NavUtils.CanPathTo('Land', unitPos, destination) then
+        result, bestPos = NavUtils.CanPathTo('Amphibious', unitPos, destination)
         if not result and not SUtils.CheckForMapMarkers(aiBrain) then
             result, bestPos = unit:CanPathTo(destination)
         end
@@ -126,7 +127,7 @@ function EngineerMoveWithSafePathSorian(aiBrain, unit, destination)
 
     -- If we're here, we haven't used transports and we can path to the destination
     if result then
-        local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, 'Amphibious', unit:GetPosition(), destination, 10)
+        local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSorian(aiBrain, 'Amphibious', unit:GetPosition(), destination, 10)
         if path then
             local pathSize = table.getn(path)
             -- Move to way points (but not to destination... leave that for the final command)
@@ -284,4 +285,59 @@ function AIFindStartLocationNeedsEngineerSorian(aiBrain, locationType, radius, t
     end
 
     return retPos, retName
+end
+
+---@param aiBrain AIBrain
+---@param eng Unit
+---@param pos Vector
+---@return boolean
+function EngineerTryReclaimCaptureAreaSorian(aiBrain, eng, pos)
+    if not pos then
+        return false
+    end
+
+    -- Check if enemy units are at location
+    local checkCats = {categories.ENGINEER - categories.COMMAND, categories.STRUCTURE + (categories.MOBILE * categories.LAND - categories.ENGINEER - categories.COMMAND)}
+    for k, v in checkCats do
+        local checkUnits = aiBrain:GetUnitsAroundPoint(v, pos, 10, 'Enemy')
+        for num, unit in checkUnits do
+            if not unit.Dead and EntityCategoryContains(categories.ENGINEER, unit) then
+                unit.CaptureInProgress = true
+                IssueCapture({eng}, unit)
+                return true
+            elseif not unit.Dead and not EntityCategoryContains(categories.ENGINEER, unit) then
+                unit.ReclaimInProgress = true
+                IssueReclaim({eng}, unit)
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
+---@param aiBrain AIBrain
+---@param locationType string
+---@param assisteeType string
+---@param buildingCategory string
+---@param assisteeCategory string
+---@return unknown
+function GetAssisteesSorian(aiBrain, locationType, assisteeType, buildingCategory, assisteeCategory)
+    if assisteeType == 'Factory' then
+        -- Sift through the factories in the location
+        local manager = aiBrain.BuilderManagers[locationType].FactoryManager
+        return manager:GetFactoriesWantingAssistance(buildingCategory, assisteeCategory)
+    elseif assisteeType == 'Engineer' then
+        local manager = aiBrain.BuilderManagers[locationType].EngineerManager
+        return manager:GetEngineersWantingAssistance(buildingCategory, assisteeCategory)
+    elseif assisteeType == 'Structure' then
+        local manager = aiBrain.BuilderManagers[locationType].PlatoonFormManager
+        return manager:GetUnitsBeingBuilt(buildingCategory, assisteeCategory)
+    elseif assisteeType == 'NonUnitBuildingStructure' then
+        return GetUnitsBeingBuilt(aiBrain, locationType, assisteeCategory)
+    else
+        WARN('*AI ERROR: Invalid assisteeType - ' .. assisteeType)
+    end
+
+    return false
 end

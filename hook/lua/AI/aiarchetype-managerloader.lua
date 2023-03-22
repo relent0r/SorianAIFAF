@@ -1,7 +1,7 @@
-OldExecutePlanFunctionUveso = ExecutePlan
+ExecutePlanFunctionSorian = ExecutePlan
 function ExecutePlan(aiBrain)
     if not aiBrain.Sorian then
-        OldExecutePlanFunctionUveso(aiBrain)
+        ExecutePlanFunctionSorian(aiBrain)
         return
     end
     aiBrain:SetConstantEvaluate(false)

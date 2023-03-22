@@ -97,12 +97,11 @@ function EngineerMoveWithSafePathSorian(aiBrain, unit, destination)
     if not destination then
         return false
     end
-    local NavUtils = import("/lua/sim/navutils.lua")
 
-    local unitPos = unit:GetPosition()
-    local result, bestPos = NavUtils.CanPathTo('Land', unitPos, destination)
-    if not NavUtils.CanPathTo('Land', unitPos, destination) then
-        result, bestPos = NavUtils.CanPathTo('Amphibious', unitPos, destination)
+    local result, bestPos = false
+    result, bestPos = AIAttackUtils.CanGraphTo(unit, destination, 'Land')
+    if not result then
+        result, bestPos = AIAttackUtils.CanGraphTo(unit, destination, 'Amphibious')
         if not result and not SUtils.CheckForMapMarkers(aiBrain) then
             result, bestPos = unit:CanPathTo(destination)
         end

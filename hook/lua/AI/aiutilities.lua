@@ -340,3 +340,68 @@ function GetAssisteesSorian(aiBrain, locationType, assisteeType, buildingCategor
 
     return false
 end
+
+---@param aiBrain AIBrain
+---@param locationType string
+---@param radius number
+---@param markerType MarkerType
+---@param tMin number
+---@param tMax number
+---@param tRings number
+---@param tType string
+---@param maxUnits number
+---@param unitCat EntityCategory
+---@param markerRadius number
+---@return boolean
+---@return boolean
+function AIFindFirebaseLocationSorian(aiBrain, locationType, radius, markerType, tMin, tMax, tRings, tType, maxUnits, unitCat, markerRadius)
+    -- Get location of commander
+    local estartX, estartZ = aiBrain:GetCurrentEnemy():GetArmyStartPos()
+    local threatPos = {estartX, 0, estartZ}
+
+    -- Get markers
+    local markerList = AIGetMarkerLocationsSorian(aiBrain, markerType)
+
+    -- For each marker, check against threatpos. Save markers that are within the FireBaseRange
+    local inRangeList = {}
+    for _, marker in markerList do
+        local distSq = VDist2Sq(marker.Position[1], marker.Position[3], threatPos[1], threatPos[3])
+        if distSq < radius * radius  then
+            table.insert(inRangeList, marker)
+        end
+    end
+
+    -- Pick the closest, least-threatening position in range
+    local bestDistSq = 9999999999
+    local bestThreat = 9999999999
+    local bestMarker = false
+    local maxThreat = tMax or 1
+    local catCheck = ParseEntityCategory(unitCat) or categories.ALLUNITS
+    local reference = false
+    local refName = false
+    for _, marker in inRangeList do
+        local threat = aiBrain:GetThreatAtPosition(marker.Position, 1, true, 'AntiSurface')
+        if threat < maxThreat then
+            local numUnits = table.getn(GetOwnUnitsAroundPoint(aiBrain, catCheck, marker.Position, markerRadius or 20))
+            if numUnits < maxUnits then
+                if threat < bestThreat and threat < maxThreat then
+                    bestDistSq = VDist2Sq(threatPos[1], threatPos[3], marker.Position[1], marker.Position[3])
+                    bestThreat = threat
+                    bestMarker = marker
+                elseif threat == bestThreat then
+                    local distSq = VDist2Sq(threatPos[1], threatPos[3], marker.Position[1], marker.Position[3])
+                    if distSq > bestDistSq then
+                        bestDistSq = distSq
+                        bestMarker = marker
+                    end
+                end
+            end
+        end
+    end
+    if bestMarker then
+        reference = bestMarker.Position
+        refName = bestMarker.Name
+    end
+
+    return reference, refName
+end

@@ -4,7 +4,6 @@
 -------------------------------------------------------------------
 local UCBC = '/lua/editor/unitcountbuildconditions.lua'
 local MIBC = '/lua/editor/miscbuildconditions.lua'
-local MABC = '/lua/editor/markerbuildconditions.lua'
 local EBC = '/lua/editor/economybuildconditions.lua'
 local SBC = '/mods/sorianaifaf/lua/editor/sorianbuildconditions.lua'
 local SIBC = '/mods/sorianaifaf/lua/editor/sorianinstantbuildconditions.lua'
@@ -1249,7 +1248,7 @@ BuilderGroup {
             { SIBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 } },
             --{ SBC, 'TargetHasLessThanUnitsWithCategory', { 6, categories.ANTIMISSILE * categories.TECH2 * categories.STRUCTURE }},
             --{ UCBC, 'HaveUnitsWithCategoryAndAlliance', { false, 10, categories.ANTIMISSILE * categories.TECH2 * categories.STRUCTURE, 'Enemy'}},
-            { MABC, 'CanBuildFirebase', { 'LocationType', 256, 'Expansion Area', -1000, 5, 1, 'AntiSurface', 1, 'STRATEGIC', 20} },
+            { SBC, 'CanBuildFirebase', { 'MAIN', 256, 'Expansion Area', -1000, 5, 1, 'AntiSurface', 1, 'STRATEGIC', 20, 'CanBuilderFireBaseValidate'} },
             { SIBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.2}},
             --{ SBC, 'MapGreaterThan', { 500, 500 }},
         },

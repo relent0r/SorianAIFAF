@@ -9,8 +9,6 @@ function ExecutePlan(aiBrain)
     WaitSeconds(1)
     if not aiBrain.BuilderManagers.MAIN.FactoryManager:HasBuilderList() then
         aiBrain:SetResourceSharing(true)
-        aiBrain:SetupUnderEnergyStatTrigger(0.1)
-        aiBrain:SetupUnderMassStatTrigger(0.1)
 
         SetupMainBase(aiBrain)
 

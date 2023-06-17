@@ -622,6 +622,9 @@ function SendPlatoonWithTransportsSorian(aiBrain, platoon, destination, bRequire
                 counter = counter + 1
                 WaitSeconds(Random(10,15))
                 if not aiBrain:PlatoonExists(platoon) then
+                    if not aiBrain.NeedTransports then
+                        aiBrain.NeedTransports = 0
+                    end
                     aiBrain.NeedTransports = aiBrain.NeedTransports - numTransportsNeeded
                     if aiBrain.NeedTransports < 0 then
                         aiBrain.NeedTransports = 0
@@ -638,7 +641,9 @@ function SendPlatoonWithTransportsSorian(aiBrain, platoon, destination, bRequire
                 units = survivors
 
             end
-
+            if not aiBrain.NeedTransports then
+                aiBrain.NeedTransports = 0
+            end
             aiBrain.NeedTransports = aiBrain.NeedTransports - numTransportsNeeded
             if aiBrain.NeedTransports < 0 then
                 aiBrain.NeedTransports = 0

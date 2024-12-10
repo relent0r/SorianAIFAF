@@ -13,7 +13,7 @@ local FactoryManager = import("/lua/sim/factorybuildermanager.lua")
 local PlatoonFormManager = import("/lua/sim/platoonformmanager.lua")
 local BrainConditionsMonitor = import("/lua/sim/brainconditionsmonitor.lua")
 local EngineerManager = import("/lua/sim/engineermanager.lua")
-local StratManager = import("/lua/sim/strategymanager.lua")
+local StratManager = import("/mods/sorianaifaf/lua/sim/strategymanager.lua")
 local StandardBrain = import("/lua/aibrain.lua").AIBrain
 local SUtils = import("/lua/ai/sorianutilities.lua")
 
@@ -76,7 +76,6 @@ AIBrain = Class(SorianAIBrainClass) {
         if self.BrainType == 'Human' then
             return
         end
-        LOG('Sorian is initializing skirmish systems')
 
         -- TURNING OFF AI POOL PLATOON, I MAY JUST REMOVE THAT PLATOON FUNCTIONALITY LATER
         local poolPlatoon = self:GetPlatoonUniquelyNamed('ArmyPool')

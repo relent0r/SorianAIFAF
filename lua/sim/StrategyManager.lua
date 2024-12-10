@@ -8,7 +8,7 @@
 --****************************************************************************
 
 local BuilderManager = import("/lua/sim/buildermanager.lua").BuilderManager
-local StrategyBuilder = import("/lua/sim/strategybuilder.lua")
+local StrategyBuilder = import("/mods/sorianaifaf/lua/sim/strategybuilder.lua")
 
 ---@class StrategyManager : BuilderManager
 StrategyManager = Class(BuilderManager) {

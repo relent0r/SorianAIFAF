@@ -259,7 +259,7 @@ BuilderGroup {
         InterruptStrategy = true,
         OnStrategyActivate = function(self, aiBrain)
             Builders[self.BuilderName].Running = true
-            LOG('*AI DEBUG: Sorian Engy Drop Strategy Activated by '..aiBrain.Nickname..'!')
+            --LOG('*AI DEBUG: Sorian Engy Drop Strategy Activated by '..aiBrain.Nickname..'!')
             local x,z = aiBrain:GetArmyStartPos()
             local count = 0
             repeat

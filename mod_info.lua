@@ -1,6 +1,6 @@
 name = "SorianAI-FAF"
-uid = "73e73dee-aff4-49fb-b661-f636a2a0cc61"
-version = 1
+uid = "73e73dee-aff4-49fb-a94e-f636a2a0cc61"
+version = 2
 copyright = "Sorian"
 description = "The original Sorian AI from FAF. Converted to a vault mod by relentless aka relent0r"
 author = "relentless"

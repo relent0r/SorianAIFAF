@@ -1167,7 +1167,7 @@ Platoon = Class(SorianAIPlatoonClass) {
             end
         end
         if not aiBrain:PlatoonExists(self) then --or assistData.PermanentAssist then
-            LOG('*AI DEBUG: Engie perma assisting')
+            --LOG('*AI DEBUG: Engie perma assisting')
             SUtils.AISendPing(eng:GetPosition(), 'move', aiBrain:GetArmyIndex())
             return
         end
